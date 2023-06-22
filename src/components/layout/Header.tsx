@@ -62,12 +62,7 @@ const Header = () => {
             >
                 {/* <MenuItem onClick={() => handleClose('progress')}>Progress</MenuItem> */}
                 <MenuItem onClick={() => handleClose('scrapper')}>Scrapper</MenuItem>
-                <MenuItem onClick={() => handleClose('subscriptions')}>Subscribe</MenuItem>
                 <MenuItem onClick={() => handleClose('exportPage')}>Export</MenuItem>
-                {
-                    auth.currentUser ? <MenuItem onClick={() => signOutHandle()}>Log Out</MenuItem> : <MenuItem onClick={() => handleClose('auth')}>Sign In/Up</MenuItem>
-                }
-
                 {/* <MenuItem onClick={() => handleClose('signIn')}>Sign In</MenuItem>
                 <MenuItem onClick={() => handleClose('signUp')}>Sign Up</MenuItem>
                 <MenuItem onClick={() => signOutUser()}>Sign Out</MenuItem> */}

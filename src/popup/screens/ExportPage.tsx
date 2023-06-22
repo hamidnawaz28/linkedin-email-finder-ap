@@ -9,7 +9,7 @@ import { MessagingMethods } from '../../common/browserMethods';
 import { MESSAGING, SCRAPING_STATUS } from '../../common/constants';
 import { downloadExcel } from '../../common/utils';
 import { ScreenContext } from '../../context';
-import { extPay } from '../../extension-subscription';
+
 import { auth } from '../../firebase';
 import { setUserQuota } from '../../firebase/api';
 
@@ -87,8 +87,8 @@ function ExportPage() {
         if (profiles.length > 0) {
             downloadExcel("Profiles", ["Profile Url", "Thumbnail", "Tagline", "Location", "Username", "Picture Url", "First Name", "Last Name", "Email", "Phone", "Websites", "Address", "Current Company", "Current Designation"], profiles)
             toast.success("Downloading file!", { autoClose: 2000, })
-            const user = await extPay.getUser()
-            if (!user.paid && auth.currentUser?.email) {
+
+            if (auth.currentUser?.email) {
                 await setUserQuota(auth.currentUser?.email, withEmails.length)
             }
         }
@@ -123,7 +123,6 @@ function ExportPage() {
                     {
                         (status == SCRAPING_STATUS.COLLECTING_PROFILES_COMPLETE_DATA || status == SCRAPING_STATUS.COLLECTING_PROFILES_PARTIAL_DATA) ? <Button onClick={okClickHandle} variant='contained'>Stop</Button> : null
                     }
-
                 </Box>
             </Box >
 

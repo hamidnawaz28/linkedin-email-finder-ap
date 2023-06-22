@@ -13,12 +13,6 @@ import {
   updatePageToScrap,
 } from '../common/services'
 
-import { extPay } from '../extension-subscription'
-extPay.startBackground()
-// extPay.onPaid(() => {
-//   Browser.runtime.sendMessage({})
-// })
-console.log(extPay)
 const { tabMesageWithId, runTimeMessage } = new MessagingMethods()
 
 Browser.runtime.onMessage.addListener(async (request, tabInfo) => {

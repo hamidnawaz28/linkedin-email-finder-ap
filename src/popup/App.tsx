@@ -9,7 +9,7 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const App = () => {
-  const [currentScreen, setCurrentScreen] = useState('auth');
+  const [currentScreen, setCurrentScreen] = useState('scrapper');
   return (
     <ScreenContext.Provider value={{ currentScreen, setCurrentScreen }}>
       <ToastContainer position="bottom-right" />

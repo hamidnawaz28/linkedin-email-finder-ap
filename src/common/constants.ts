@@ -22,8 +22,6 @@ const SCRAPING_STATUS = {
   READY_FOR_DOWNLOAD: 'READY_FOR_DOWNLOAD',
 }
 
-const EXTPAY_ID = 'emails-scrap'
-
 const FIREBASE_INIT = {
   apiKey: 'AIzaSyA9N_8DZNynJg7k9GhMzsDJPzPgFkByRgc',
   authDomain: 'linkedin-scrapper-38341.firebaseapp.com',
@@ -34,4 +32,4 @@ const FIREBASE_INIT = {
   measurementId: 'G-K30RK7RRJ5',
 }
 
-export { MESSAGING, EXTPAY_ID, FIREBASE_INIT, SCRAPING_STATUS }
+export { MESSAGING, FIREBASE_INIT, SCRAPING_STATUS }

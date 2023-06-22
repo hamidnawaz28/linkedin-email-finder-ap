@@ -4,7 +4,7 @@ import { MESSAGING } from '../../common/constants'
 import { MessagingMethods, OtherBrowerMethods } from '../../common/browserMethods'
 import { ActionButton } from '../../components'
 import { ScreenContext } from '../../context'
-import { extPay } from '../../extension-subscription'
+
 import { toast } from 'react-toastify'
 import { auth } from '../../firebase'
 import { getUserQuota } from '../../firebase/api'
@@ -36,7 +36,7 @@ const Scrapper = () => {
             })
         }
         else if (!onPeopleSearch) {
-            toast.error('Navigate to people search page in linkedin')
+            toast.error('Navigate to people search page on linkedin')
         }
         else {
             toast.error('Trial Expired, subscribe to continue.')
@@ -55,9 +55,8 @@ const Scrapper = () => {
             setQuota(quota)
         }
     }
+
     const initUser = async () => {
-        const user = await extPay.getUser()
-        setPaid(user.paid)
         await updateQuota()
         setPagesToScrap(await getPagesToScrap())
     }
