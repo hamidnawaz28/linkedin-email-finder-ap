@@ -1,0 +1,37 @@
+{
+  "name": "linkedin_email_finder_ap",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@emotion/react": "^11.11.0",
+    "@emotion/styled": "^11.11.0",
+    "@mui/icons-material": "^5.11.16",
+    "@mui/material": "^5.13.2",
+    "@paypal/react-paypal-js": "^7.8.3",
+    "@types/react-dom": "18.2.4",
+    "axios": "^1.4.0",
+    "eslint": "8.41.0",
+    "eslint-config-next": "13.4.3",
+    "firebase": "^9.22.0",
+    "i18next": "^22.5.0",
+    "next": "13.4.3",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "react-i18next": "^12.3.1",
+    "react-scroll": "^1.8.9",
+    "react-toastify": "^9.1.3",
+    "uuid": "^9.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "20.3.0",
+    "@types/react": "18.2.11",
+    "@types/uuid": "^9.0.2",
+    "typescript": "5.1.3"
+  }
+}

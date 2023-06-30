@@ -1,6 +1,6 @@
 import Browser from 'webextension-polyfill'
-import { MessagingMethods } from '../common/browserMethods'
-import { MESSAGING } from '../common/constants'
+import { setLocalStorage } from '../common/browserMethods'
+import { MESSAGING, SCRAPING_STATUS } from '../common/constants'
 import {
   addProfiles,
   changeStatus,
@@ -12,8 +12,6 @@ import {
   updateAProfile,
   updatePageToScrap,
 } from '../common/services'
-
-const { tabMesageWithId, runTimeMessage } = new MessagingMethods()
 
 Browser.runtime.onMessage.addListener(async (request, tabInfo) => {
   const { message, data } = request
@@ -34,4 +32,8 @@ Browser.runtime.onMessage.addListener(async (request, tabInfo) => {
   }
   const response = (await responseObj?.[message]?.()) || false
   return response
+})
+
+Browser.runtime.onInstalled.addListener(async () => {
+  await setLocalStorage({ status: SCRAPING_STATUS.IDLE, profiles: [], user: {} })
 })

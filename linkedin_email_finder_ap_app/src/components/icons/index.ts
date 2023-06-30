@@ -1,0 +1,18 @@
+export {
+  AWS,
+  CProgramming,
+  Django,
+  Figma,
+  Firebase,
+  Javascript,
+  Jira,
+  MaterialUi,
+  Nginx,
+  PostgreSQl,
+  Python,
+  React,
+  Redux,
+  Typescript,
+  Vue,
+  Node,
+} from "./Icons";

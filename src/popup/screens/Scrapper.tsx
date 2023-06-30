@@ -6,40 +6,30 @@ import { ActionButton } from '../../components'
 import { ScreenContext } from '../../context'
 
 import { toast } from 'react-toastify'
-import { auth } from '../../firebase'
+
 import { getUserQuota } from '../../firebase/api'
 import { getPagesToScrap, updatePageToScrap } from '../../common/services'
-const { tabMesage, runTimeMessage, } = new MessagingMethods();
+const { tabMesage } = new MessagingMethods();
 
 
 
 const Scrapper = () => {
     const { setCurrentScreen } = useContext(ScreenContext);
+    // setCurrentScreen('exportPage')
     const [pagesToScrap, setPagesToScrap] = useState(3)
     const [paid, setPaid] = useState(false)
     const [quota, setQuota] = useState(0)
 
     const onStartHandle = async () => {
         const currentLocation = await tabMesage({ message: MESSAGING.GET_PAGE_URL_CONTENT, data: {} })
-
         const onPeopleSearch = currentLocation.includes("https://www.linkedin.com/search/results/people")
-        if (!auth.currentUser) {
-            toast.error('Please login')
-            setCurrentScreen('signIn')
-            return
-        }
-        else if ((paid || quota !== 0) && onPeopleSearch) {
-            setCurrentScreen('exportPage')
+        if (!onPeopleSearch) {
+            toast.error("Kindly navigate to people search page on linkedin, then start")
+        } else {
             await tabMesage({
                 message: MESSAGING.START_PARTIAL_PROFILES_DATA_COLLECTION,
                 data: { pagesToScrap }
             })
-        }
-        else if (!onPeopleSearch) {
-            toast.error('Navigate to people search page on linkedin')
-        }
-        else {
-            toast.error('Trial Expired, subscribe to continue.')
         }
     }
 
@@ -49,16 +39,9 @@ const Scrapper = () => {
         updatePageToScrap(newPages)
     }
 
-    const updateQuota = async () => {
-        if (auth.currentUser?.email) {
-            const quota = await getUserQuota(auth.currentUser.email)
-            setQuota(quota)
-        }
-    }
+
 
     const initUser = async () => {
-        await updateQuota()
-        setPagesToScrap(await getPagesToScrap())
     }
 
     useEffect(() => {

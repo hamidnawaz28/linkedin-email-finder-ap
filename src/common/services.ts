@@ -65,7 +65,8 @@ const getPagesToScrap = async () => {
 }
 
 const initializeDataBase = async () => {
-  await setLocalStorage({ status: SCRAPING_STATUS.IDLE, profiles: [] })
+  const allData = await getAllData()
+  await setLocalStorage({ ...allData, status: SCRAPING_STATUS.IDLE, profiles: [], user: {} })
 }
 
 const changeStatus = async (status: string) => {
@@ -88,6 +89,7 @@ const startCompleteDataCollection = async (tabId: number) => {
       },
     })
   }
+
   await asyncSleep(10)
   const collectedProfilesData = await getAllProfiles()
   const profilesWithNoEmails = collectedProfilesData.filter(
