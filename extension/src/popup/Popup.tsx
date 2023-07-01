@@ -49,7 +49,6 @@ const Popup = () => {
         <CurrentScreen />
         <Divider />
     </div>
-
 }
 
 export default Popup
