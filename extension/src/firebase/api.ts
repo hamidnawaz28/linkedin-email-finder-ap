@@ -1,5 +1,6 @@
 import axios from 'axios'
-import { addADoc, getADoc } from './firestoreMethods'
+
+import { addADoc, getADoc, getUserData } from './firestoreMethods'
 
 const setUsersData = async (id: string, data: any) => {
   return await addADoc('users', id, data)
@@ -21,6 +22,7 @@ const setUserQuota = async (email: string, by = 0) => {
 }
 
 const initQuota = async (email: string) => await setUsersData(email, { quota: 10 })
+
 const getUserQuota = async (id: string) => {
   const resp: any = await getUsersData(id)
   return resp.quota
@@ -32,4 +34,32 @@ const verifyEmail = async (email: string) => {
   )
   return resp.data.result
 }
-export { verifyEmail, setUsersData, getUsersData, setUserQuota, getUserQuota, initQuota }
+
+const verifyPaypalSubscription = async (subscriptionId: string) => {
+  const resp = await axios.get(
+    `https://api-m.sandbox.paypal.com/v1/billing/subscriptions/${subscriptionId}`,
+    {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      auth: {
+        username:
+          'Abz3mjZatyTYoc2Q9FrAqcP8IxFqZeNUjnM3RZg78HUKPM0htUC8PSFctofg_kdhRuzXAGHzCqhmDCB3',
+        password:
+          'EOztXEyo8w4Z86CWc-YakKJ4L-4gYJ4HyUFyFD-g3LLbb6M-QDElmYzQHkjuddMLyFLBJqfok2b-Br5n',
+      },
+    },
+  )
+  return resp
+}
+
+export {
+  verifyEmail,
+  setUsersData,
+  getUsersData,
+  setUserQuota,
+  getUserQuota,
+  initQuota,
+  getUserData,
+  verifyPaypalSubscription,
+}

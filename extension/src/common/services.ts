@@ -74,6 +74,11 @@ const changeStatus = async (status: string) => {
   await setLocalStorage({ ...allData, status: status })
 }
 
+const updateLocalData = async (data: any) => {
+  const allData = await getAllData()
+  await setLocalStorage({ ...allData, ...data })
+}
+
 const startCompleteDataCollection = async (tabId: number) => {
   const allProfiles = await getAllProfiles()
   for (const profile of allProfiles) {
@@ -123,4 +128,5 @@ export {
   startCompleteDataCollection,
   getAllData,
   changeStatus,
+  updateLocalData,
 }

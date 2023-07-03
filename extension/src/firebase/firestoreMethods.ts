@@ -1,4 +1,4 @@
-import { doc, getDoc, setDoc } from 'firebase/firestore'
+import { collection, doc, getDoc, getDocs, query, setDoc, where } from 'firebase/firestore'
 import { firestore } from './apps'
 
 const addADoc = async (collection: string, id: string, data: any) => {
@@ -18,4 +18,17 @@ const getADoc = async (collection: string, documentId: string) => {
     return { success: false, data: {}, message: 'missing data!' }
   }
 }
-export { addADoc, editADoc, getADoc }
+
+const getUserData = async (key: string, value: string) => {
+  const usersRef = collection(firestore, 'users')
+  const q = query(usersRef, where(key, '==', value))
+  const querySnapshot = await getDocs(q)
+  const resp: any = []
+  querySnapshot.forEach((doc: any) => {
+    resp.push(doc.data())
+  })
+
+  return resp
+}
+
+export { addADoc, editADoc, getADoc, getUserData }

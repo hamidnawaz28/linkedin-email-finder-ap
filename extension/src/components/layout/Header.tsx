@@ -39,7 +39,7 @@ const Header = () => {
             padding: '5px 10px'
         }}>
             <img src={'logo.png'} alt="" height={'100%'} />
-            <Box onClick={onClickHandle} sx={[
+            {/* <Box onClick={onClickHandle} sx={[
                 {
                     '&:hover': {
                         cursor: "pointer"
@@ -50,8 +50,8 @@ const Header = () => {
                 {
                     open ? <Widgets /> : <MenuIcon />
                 }
-            </Box>
-            <Menu
+            </Box> */}
+            {/* <Menu
                 id="basic-menu"
                 anchorEl={anchorEl}
                 open={open}
@@ -60,14 +60,14 @@ const Header = () => {
                     'aria-labelledby': 'basic-button',
                 }}
             >
-                {/* <MenuItem onClick={() => handleClose('progress')}>Progress</MenuItem> */}
+                <MenuItem onClick={() => handleClose('progress')}>Progress</MenuItem>
                 <MenuItem onClick={() => handleClose('scrapper')}>Scrapper</MenuItem>
                 <MenuItem onClick={() => handleClose('exportPage')}>Export</MenuItem>
-                {/* <MenuItem onClick={() => handleClose('signIn')}>Sign In</MenuItem>
+                <MenuItem onClick={() => handleClose('signIn')}>Sign In</MenuItem>
                 <MenuItem onClick={() => handleClose('signUp')}>Sign Up</MenuItem>
-                <MenuItem onClick={() => signOutUser()}>Sign Out</MenuItem> */}
+                <MenuItem onClick={() => signOutUser()}>Sign Out</MenuItem>
 
-            </Menu>
+            </Menu> */}
         </Box>
     )
 }

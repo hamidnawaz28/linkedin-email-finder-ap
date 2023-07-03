@@ -31,8 +31,8 @@ function ActionButton({ label, onClick, ...props }: any) {
   return (
     <Box
       sx={{
-        pt: 1,
-        pb: 1,
+        pt: 0.5,
+        pb: 0.5,
       }}
     >
       <Button aria-label="delete" onClick={onClick} variant="contained" size="small" {...props}>
