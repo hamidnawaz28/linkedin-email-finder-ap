@@ -40,6 +40,15 @@ const verifyEmail = async (email: string) => {
   } 
 }
 
+const setEmailData = async (linkedinAccount: string, email: string) => {
+  return await addADoc('emails', linkedinAccount, email)
+}
+
+const getEmailData = async (linkedinAccount: string) => {
+  const respo = await getADoc('emails', linkedinAccount)
+  return respo.data
+}
+
 const verifyPaypalSubscription = async (subscriptionId: string) => {
   const resp = await axios.get(
     `https://api-m.sandbox.paypal.com/v1/billing/subscriptions/${subscriptionId}`,
@@ -67,4 +76,6 @@ export {
   initQuota,
   getUserData,
   verifyPaypalSubscription,
+  setEmailData,
+  getEmailData
 }

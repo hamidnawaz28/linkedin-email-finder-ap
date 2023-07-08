@@ -8,6 +8,7 @@ import {
 } from './browserMethods'
 import { MESSAGING, SCRAPING_STATUS } from './constants'
 import { asyncSleep } from './utils'
+import { setEmailData,getEmailData } from '../firebase/api'
 
 const { tabMesageWithId, runTimeMessage } = new MessagingMethods()
 const { updateATabUrl, waitTillTabLoads } = new OtherBrowerMethods()
@@ -99,7 +100,6 @@ const startCompleteDataCollection = async (tabId: number) => {
     const matchedProfile = allData.find(
       (newProfileData: any) => newProfileData.profileUrl == profile.profileUrl,
       )
-      debugger
      
     if(matchedProfile!=-1 && matchedProfile.email=='NOT_FOUND' && matchedProfile.currentCompany!='NOT_FOUND'){
       const dbEmailData:any = await getEmailFromDb(matchedProfile.profileUrl)
@@ -132,10 +132,12 @@ const startCompleteDataCollection = async (tabId: number) => {
 }
 const saveProfileEmail=async(linkedinUserName:string,email:string)=>{
   console.log('Saved linkedin profile');
+  await setEmailData(linkedinUserName,email)
+  
 }
 
 const getEmailFromDb=async(linkedinUserName:string)=>{
-
+  return await getEmailData(linkedinUserName)
 }
 export {
   getAProfile,
