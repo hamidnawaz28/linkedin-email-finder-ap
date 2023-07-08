@@ -121,7 +121,7 @@ const scrapACompleteProfileData = async (profileUrl: string) => {
     currentDesignation: currentDesignationRef?.innerText || 'NOT_FOUND',
     scrapped: true,
   }
-
+debugger
   const closeButtonRef = document.querySelector('.artdeco-modal__dismiss') as HTMLElement
   closeButtonRef.click()
 

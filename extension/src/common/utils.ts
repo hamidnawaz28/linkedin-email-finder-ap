@@ -62,13 +62,12 @@ export function csvJSON(csv: any) {
   return result
 }
 
-const potentialEmails = (domain = '', firstName = '', lastName = '') => {
+const potentialOtherEmailCombination = (domain = '', firstName = '', lastName = '') => {
   const firstInitial = firstName.charAt(0)
   const lastInitial = lastName.charAt(0)
 
   const allCombinations = [
     firstName,
-    `${firstName}.${lastName}`,
     `${firstName}${lastInitial}`,
     `${firstName}.${lastInitial}`,
     `${lastInitial}${firstName}`,
@@ -79,7 +78,6 @@ const potentialEmails = (domain = '', firstName = '', lastName = '') => {
     `${firstName}${lastName}`,
     lastName,
     `${firstInitial}.${lastName}`,
-    `${firstInitial}${lastName}`,
     `${firstInitial}${lastInitial}`,
     `${firstInitial}.${lastInitial}`,
     `${lastName}${firstName}`,
@@ -95,20 +93,29 @@ const potentialEmails = (domain = '', firstName = '', lastName = '') => {
     `${lastInitial}_${firstInitial}`,
   ]
 
-  // firstinitialmiddleinitiallastname@domain.com
-  // firstinitialmiddleinitial.lastname@domain.com
-
   const allEmails = allCombinations.map((el) => `${el}@${domain}`)
   return allEmails
 }
 
 const allCollectedEmails = async (domain = '', firstName = '', lastName = '') => {
-  const emails = potentialEmails(domain, firstName, lastName)
-  const emailsResponse = []
-  for (const email of emails) {
-    const result = await verifyEmail(email)
-    if (result == 'deliverable') emailsResponse.push(email)
+  
+  const firstAttemptEmail= `${firstName}.${lastName}@${domain}`
+  const firstAttemptEmailResult = await verifyEmail(firstAttemptEmail)
+  if(firstAttemptEmailResult) return firstAttemptEmail
+  else{
+    const secondAttemptEmail= `${firstName?.charAt(0)}${lastName}@${domain}`
+    const secondAttemptEmailResult = await verifyEmail(secondAttemptEmail)
+    if(secondAttemptEmailResult) return secondAttemptEmail
+    else {
+      const otherEmailCombinations = potentialOtherEmailCombination(domain, firstName, lastName)
+      
+      const allRequests = otherEmailCombinations.map(email=>verifyEmail(email))
+      const emailResults = await Promise.all(allRequests);
+       const emailFoundIndex = emailResults.findIndex((request:boolean)=>request==true)
+       if(emailFoundIndex!=-1) return otherEmailCombinations[emailFoundIndex]
+      return 'NOT_FOUND'
+    }
   }
-  return emailsResponse
+  
 }
-export { potentialEmails, downloadExcel, downloadCSV, asyncSleep, allCollectedEmails }
+export { potentialOtherEmailCombination, downloadExcel, downloadCSV, asyncSleep, allCollectedEmails }

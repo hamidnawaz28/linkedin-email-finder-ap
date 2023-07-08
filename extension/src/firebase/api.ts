@@ -29,10 +29,15 @@ const getUserQuota = async (id: string) => {
 }
 
 const verifyEmail = async (email: string) => {
-  const resp = await axios.get(
-    `https://api.bouncify.io/v1/verify?apikey=xnz009olzeagfaolq7xuzgcs5bzd0f3c&email=${email}`,
-  )
-  return resp.data.result
+  try{
+    const resp = await axios.get(
+      `https://api.bouncify.io/v1/verify?apikey=xnz009olzeagfaolq7xuzgcs5bzd0f3c&email=${email}`,
+    )
+  debugger
+    return resp.data.result=='deliverable'
+  }catch{
+    return false
+  } 
 }
 
 const verifyPaypalSubscription = async (subscriptionId: string) => {

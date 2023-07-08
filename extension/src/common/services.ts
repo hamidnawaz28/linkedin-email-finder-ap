@@ -94,11 +94,12 @@ const startCompleteDataCollection = async (tabId: number) => {
         profileUrl: profile.profileUrl,
       },
     })
-
+    
     const allData = await getAllProfiles()
     const matchedProfile = allData.find(
       (newProfileData: any) => newProfileData.profileUrl == profile.profileUrl,
-    )
+      )
+      debugger
      
     if(matchedProfile!=-1 && matchedProfile.email=='NOT_FOUND' && matchedProfile.currentCompany!='NOT_FOUND'){
       const dbEmailData:any = await getEmailFromDb(matchedProfile.profileUrl)
