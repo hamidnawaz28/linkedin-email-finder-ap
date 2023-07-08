@@ -94,8 +94,8 @@ const SubscriptionCard = () => {
   }, []);
 
   return (
-    <Box>
-      <Box sx={{ width: "50%", margin: 'auto' }}>
+    <Box id='subcription'>
+      <Box sx={{ width: "75%", margin: 'auto' }}>
         {
           showPaypal ? <Box sx={[{
             widht: '100%',

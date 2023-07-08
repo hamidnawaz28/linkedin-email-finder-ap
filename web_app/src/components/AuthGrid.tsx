@@ -9,8 +9,13 @@ const AuthGrid = ({ children }: any) => {
             height: '98vh'
         }}>
             <Box sx={{
-                backgroundColor: 'primary.main'
-            }}></Box>
+                backgroundColor: 'primary.main',
+                display:'flex',
+                justifyContent:'center',
+                alignItems:'center'
+            }}>
+                <img src="scrapping.png" alt="" />
+            </Box>
             <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>{children}</Box>
         </Box>
     )

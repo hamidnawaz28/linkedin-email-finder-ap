@@ -35,6 +35,11 @@ const verifyEmail = async (email: string) => {
   return resp.data.result;
 };
 
+const newsLetterEmails = async (email:string) => {
+  return await addADoc("newletters-emails", email, {});
+};
+
+
 export {
   verifyEmail,
   setUsersData,
@@ -42,4 +47,5 @@ export {
   setUserQuota,
   getUserQuota,
   initQuota,
+  newsLetterEmails
 };
