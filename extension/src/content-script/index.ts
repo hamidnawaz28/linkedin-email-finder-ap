@@ -1,22 +1,18 @@
 import Browser from 'webextension-polyfill'
 import { MessagingMethods } from '../common/browserMethods'
 import { MESSAGING, SCRAPING_STATUS } from '../common/constants'
-import { getAllData, getAProfile } from '../common/services'
+import { getAllData, getAProfile,initializeDataBase,changeStatus,addProfiles } from '../common/services'
 import { allCollectedEmails, asyncSleep } from '../common/utils'
+ 
 const { runTimeMessage } = new MessagingMethods()
+
+const refreshPopupData = async()=>await runTimeMessage({ message: MESSAGING.FETCH_REFRESH_DATA })
 
 // Data partial data of profiles
 const scrapPartialProfilesData = async (pagesToScrap: number) => {
-  await runTimeMessage({
-    message: MESSAGING.INITIALIZE_DATA,
-  })
-  await runTimeMessage({
-    message: MESSAGING.CHANGE_STATUS,
-    data: {
-      status: SCRAPING_STATUS.COLLECTING_PROFILES_PARTIAL_DATA,
-    },
-  })
-  await runTimeMessage({ message: MESSAGING.FETCH_REFRESH_DATA })
+  await initializeDataBase()
+  await changeStatus(SCRAPING_STATUS.COLLECTING_PROFILES_PARTIAL_DATA)
+  await refreshPopupData()
   const pages = pagesToScrap || 0
 
   for (let index = 0; index < pages; index++) {
@@ -48,26 +44,21 @@ const scrapPartialProfilesData = async (pagesToScrap: number) => {
       }
     })
 
-    await runTimeMessage({ message: MESSAGING.ADD_PROFILES, data: { profiles: allProfiles } })
+    await addProfiles(allProfiles)
     const nextPageRef = document.querySelector(
       '.artdeco-pagination__indicator.active + li',
     ) as HTMLElement
 
-    await runTimeMessage({ message: MESSAGING.FETCH_REFRESH_DATA })
+    await refreshPopupData()
     if (!nextPageRef || index == pages - 1) break
-
     const nextButtonRef = nextPageRef.querySelector('button') as HTMLElement
     nextButtonRef.click()
-
     await asyncSleep(1)
   }
-  await runTimeMessage({ message: MESSAGING.FETCH_REFRESH_DATA })
-  await runTimeMessage({
-    message: MESSAGING.CHANGE_STATUS,
-    data: {
-      status: SCRAPING_STATUS.COLLECTING_PROFILES_COMPLETE_DATA,
-    },
-  })
+
+  await refreshPopupData()
+  await changeStatus(SCRAPING_STATUS.COLLECTING_PROFILES_COMPLETE_DATA)
+   
   const data = await getAllData()
   if (data.status !== SCRAPING_STATUS.IDLE) {
     await runTimeMessage({ message: MESSAGING.START_COMPLETE_PROFILES_DATA_COLLECTION })
@@ -140,7 +131,7 @@ const scrapACompleteProfileData = async (profileUrl: string) => {
   })
 
   await asyncSleep(1)
-  await runTimeMessage({ message: MESSAGING.FETCH_REFRESH_DATA })
+  await refreshPopupData()
 }
 
 const scrapEmailsFromCompanyData = async (profileUrl: string) => {
@@ -158,7 +149,7 @@ const scrapEmailsFromCompanyData = async (profileUrl: string) => {
     },
   })
   await asyncSleep(1)
-  await runTimeMessage({ message: MESSAGING.FETCH_REFRESH_DATA })
+  await refreshPopupData()
 }
 
 const contentScript = () => {
