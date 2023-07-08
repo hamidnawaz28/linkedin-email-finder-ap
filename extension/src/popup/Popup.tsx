@@ -11,7 +11,7 @@ const Popup = () => {
 
     const initData = async () => {
         const data = await getAllData()
-        debugger
+         
         setUser(data.user)
         setLoading(false)
     }
