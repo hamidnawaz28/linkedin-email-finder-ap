@@ -131,9 +131,7 @@ const startCompleteDataCollection = async (tabId: number) => {
   await runTimeMessage({ message: MESSAGING.FETCH_REFRESH_DATA })
 }
 const saveProfileEmail=async(linkedinUserName:string,email:string)=>{
-  console.log('Saved linkedin profile');
   await setEmailData(linkedinUserName,email)
-  
 }
 
 const getEmailFromDb=async(linkedinUserName:string)=>{

@@ -145,7 +145,7 @@ const scrapEmailsFromCompanyData = async (profileUrl: string) => {
     message: MESSAGING.UPDATE_A_PROFILE,
     data: {
       profileUrl,
-      profile: { email: emails.join(';'), website: companyDomainText, subDomain },
+      profile: { email: emails, website: companyDomainText, subDomain },
     },
   })
   await asyncSleep(1)
