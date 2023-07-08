@@ -86,6 +86,7 @@ const startCompleteDataCollection = async (tabId: number) => {
     if (data.status == SCRAPING_STATUS.IDLE) break
     updateATabUrl(tabId, profile.profileUrl)
     await asyncSleep(20)
+
     await waitTillTabLoads(tabId)
     await tabMesageWithId(tabId || 0, {
       message: MESSAGING.COLLECT_A_PROFILE_DATA,
@@ -93,30 +94,48 @@ const startCompleteDataCollection = async (tabId: number) => {
         profileUrl: profile.profileUrl,
       },
     })
+
+    const allData = await getAllProfiles()
+    const matchedProfile = allData.find(
+      (newProfileData: any) => newProfileData.profileUrl == profile.profileUrl,
+    )
+     
+    if(matchedProfile!=-1 && matchedProfile.email=='NOT_FOUND' && matchedProfile.currentCompany!='NOT_FOUND'){
+      const dbEmailData:any = await getEmailFromDb(matchedProfile.profileUrl)
+      if(dbEmailData){
+        await updateAProfile(profile.profileUrl, {email:dbEmailData.email})
+        return 
+      }
+      updateATabUrl(tabId, `${matchedProfile.currentCompany}about`)
+      await asyncSleep(20)
+      await waitTillTabLoads(tabId)
+      await tabMesageWithId(tabId || 0, {
+        message: MESSAGING.COLLECT_EMAILS_FROM_COMPANY_DATA,
+        data: {
+          profileUrl: profile.profileUrl,
+        },
+      })
+    }
+    const allDataAfterEmailScrap = await getAllProfiles()
+    const matchedProfileAfterEmailScrap = allDataAfterEmailScrap.find(
+      (newProfileData: any) => newProfileData.profileUrl == profile.profileUrl,
+    )
+    if(matchedProfileAfterEmailScrap.email!='NOT_FOUND'){
+      await saveProfileEmail(matchedProfileAfterEmailScrap.profileUrl,matchedProfileAfterEmailScrap.email )
+    }
   }
 
-  await asyncSleep(10)
-  const collectedProfilesData = await getAllProfiles()
-  const profilesWithNoEmails = collectedProfilesData.filter(
-    (profile: any) => profile.email == 'NOT_FOUND',
-  )
-  for (const profile of profilesWithNoEmails) {
-    const data = await getAllData()
-    if (data.status == SCRAPING_STATUS.IDLE) break
-    updateATabUrl(tabId, `${profile.currentCompany}about`)
-    await asyncSleep(20)
-    await waitTillTabLoads(tabId)
-    await tabMesageWithId(tabId || 0, {
-      message: MESSAGING.COLLECT_EMAILS_FROM_COMPANY_DATA,
-      data: {
-        profileUrl: profile.profileUrl,
-      },
-    })
-  }
+ 
   await changeStatus(SCRAPING_STATUS.READY_FOR_DOWNLOAD)
   await runTimeMessage({ message: MESSAGING.FETCH_REFRESH_DATA })
 }
+const saveProfileEmail=async(linkedinUserName:string,email:string)=>{
+  console.log('Saved linkedin profile');
+}
 
+const getEmailFromDb=async(linkedinUserName:string)=>{
+
+}
 export {
   getAProfile,
   addProfiles,
